@@ -1,0 +1,77 @@
+modules:
+  jira:globalPage:
+    - key: forge-test-lab-hello-world-global-page
+      function: global # which redirects to MyLabGlobalPage
+      title: forge-test-lab-ui-kit
+      icon: https://pic.onlinewebfonts.com/svg/img_286633.png
+  # jira:globalPage:
+  #   - key: forge-test-lab-hello-world-global-page-custom
+  #     resource: main # resources > main which redirects to static/lab-react/build
+  #     resolver:
+  #       # function: resolver
+  #       function: consumer-function
+  #     title: forge-test-lab-custom-ui-async
+  #     icon: https://pic.onlinewebfonts.com/svg/img_286633.png
+  jira:issuePanel:
+    - key: forge-test-lab-hello-world-panel
+      function: main
+      title: forge-test-lab
+      icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
+  jira:projectPage:
+    - key: forge-test-lab-project-page
+      function: project-ui
+      title: forge-test-lab
+  jira:issueGlance:
+    - key: forge-test-lab-issue-glance
+      function: issue-glance-ui
+      title: forge-test-lab
+      label: forge-test-lab label
+  consumer:
+    - key: queue-consumer
+      # Name of the queue for which this consumer will be invoked
+      queue: queue-name
+      resolver:
+        function: consumer-function
+        # resolver function to be called with payload
+        method: event-listener
+  function:
+    - key: consumer-function
+      handler: Async-events.handler
+    # - key: global
+    #   handler: global.run
+    # OR
+    # - key: global
+    #   handler: index.Global
+    - key: resolver
+      handler: index.handler
+    - key: global
+      handler: index.Global
+    - key: main
+      handler: index.Issue
+    - key: project-ui
+      handler: index.Project
+    - key: issue-glance-ui
+      handler: index.Glance
+resources:
+  - key: main
+    path: static/lab-react/build
+permissions:
+  content:
+    styles:
+      - 'unsafe-inline'
+    scripts:
+      - 'unsafe-inline'
+  scopes:
+    - read:application-role:jira 
+    - read:group:jira
+    - read:user:jira
+    - read:issue-details:jira
+    - read:audit-log:jira
+    - read:avatar:jira
+    - read:field-configuration:jira
+    - read:issue-meta:jira
+    - storage:app
+    - read:jira-work
+
+app:
+  id: ari:cloud:ecosystem::app/02674004-369e-4ffe-8120-9589342ec454
