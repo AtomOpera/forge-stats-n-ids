@@ -96,55 +96,6 @@ const getTotalIssuesInInstance = async () => {
   return response.total;
 };
 
-const getAllIssues = async (allIssues, setAllIssues) => {
-  const currentIssues = [...allIssues];
-  const allProjects = 'project is not EMPTY';
-  const startAt = 0;
-  const maxResults = 50;
-  let count = 0;
-  const paginated = `&startAt=${startAt}&maxResults=${maxResults}`;
-  const KTProject = 'project = "KT"';
-  const jsonResponse = await api
-    .asApp()
-    .requestJira(
-      route`/rest/api/3/search?jql=project is not EMPTY&startAt=0&maxResults=50&fields=summary,comment`
-      // route`/rest/api/3/search?jql=${allProjects}` // ${paginated}&fields=summary,comment`
-    );
-
-
-  const response = await jsonResponse.json();
-  // console.log(json);
-  setAllIssues(JSON.stringify(response, null, 2));
-  return response;
-};
-
-const getIssuesCommentedByUser = (issues, userAccountId) => {
-  const issuesCommentedByUser = issues.filter((issue) => {
-    return issue.fields.comment.comments.some((comment) => {
-      return comment.author.accountId === userAccountId;
-    })
-  });
-  return issuesCommentedByUser;
-};
-
-const getIssuesInTableFormat = (issues) => {
-  //table format:
-  // [
-  //   {
-  //     key: 'XEN-1',
-  //     status: 'In Progress',
-  //   },
-  //   {
-  //     key: 'XEN-2',
-  //     status: 'To Do',
-  //   },
-  // ]
-  const issuesInTableFormat = issues.reduce((accumulator, currentValue) => {
-    return [...accumulator, { key: currentValue.key, summary: currentValue.fields.summary }];
-  }, []);
-  return issuesInTableFormat;
-};
-
 export default function () {
   // useState is a UI kit hook we use to manage the form data in local state
   const [formState, setFormState] = useState(undefined);
@@ -174,48 +125,6 @@ export default function () {
   const [startAt, setstartAt] = useState(0);
   const [totalIssues, setTotalIssues] = useState(0);
   const [totalCommentedIssues, setTotalComentedIssues] = useState(0);
-
-  // useEffect(async () => {
-  // const currentIssues = await getAllIssues(allIssues, setAllIssues);
-  // setTotalIssues(currentIssues.issues.length);
-  // const currentUserResp = await getCurrentUser();
-  // setCurrentUser(currentUserResp);
-  // const currentTotalIssuesInInstance = await getTotalIssuesInInstance();
-  // setTotalIssuesInInstance(currentTotalIssuesInInstance);
-  // const currentProjects = await getAllProjects();
-  // setAllProjects(currentProjects);
-  // console.log(currentProjects);
-
-  // const currentIssuesCommentedByUser = getIssuesCommentedByUser(currentIssues.issues, currentUserResp.accountId);
-  // setIssuesCommentedByUser(currentIssuesCommentedByUser);
-  // setTotalComentedIssues(currentIssuesCommentedByUser.length);
-
-  // const currentIssuesInTableFormat = getIssuesInTableFormat(currentIssuesCommentedByUser);
-  // setIssuesInTableFormat(currentIssuesInTableFormat);
-  // }, []);
-
-  const issues = [
-    {
-      key: 'XEN-1',
-      summary: 'In Progress',
-    },
-    {
-      key: 'XEN-2',
-      summary: 'To Do',
-    },
-  ];
-
-  const fakeProjects = [
-    {
-      name: 'project 1',
-      key: 'P',
-    },
-    {
-      name: 'project 2',
-      key: 'PP',
-    },
-  ];
-
 
   const actionButtons = [
     <Button
