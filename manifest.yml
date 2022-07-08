@@ -17,7 +17,7 @@ modules:
       handler: index.Global
 resources:
   - key: main
-    path: static/lab-react/build
+    path: static/lab-react/public # /build
 permissions:
   content:
     styles:
@@ -35,6 +35,7 @@ permissions:
     - read:issue-meta:jira
     - storage:app
     - read:jira-work
+    - read:jira-user
 
 app:
   id: ari:cloud:ecosystem::app/53ff5d5b-8e5e-4599-9aae-17393b580c6f

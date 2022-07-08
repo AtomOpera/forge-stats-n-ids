@@ -150,6 +150,14 @@ export default function () {
   return (
     <GlobalPage>
       <Fragment>
+        <Tabs>
+          <Tab label="Tab 1">
+            <Text>Hello</Text>
+          </Tab>
+          <Tab label="Tab 2">
+            <Text>World!</Text>
+          </Tab>
+        </Tabs>
         <Text>Hello <Strong>{currentUser?.displayName || 'loading...'}</Strong> from MyForgeLabGlobalPage</Text>
         {totalCommentedIssues
           ? (
