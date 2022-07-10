@@ -151,14 +151,10 @@ export default function () {
     <GlobalPage>
       <Fragment>
         <Tabs>
-          <Tab label="Tab 1">
-            <Text>Hello</Text>
-          </Tab>
-          <Tab label="Tab 2">
-            <Text>World!</Text>
-          </Tab>
-        </Tabs>
-        <Text>Hello <Strong>{currentUser?.displayName || 'loading...'}</Strong> from MyForgeLabGlobalPage</Text>
+          <Tab label="Welcome">
+          <Text></Text>
+          <Fragment>
+          <Text>Hello <Strong>{currentUser?.displayName || 'loading...'}</Strong> from MyForgeLabGlobalPage</Text>
         {totalCommentedIssues
           ? (
             <Text>Total issues found <Strong>{totalCommentedIssues || 'loading...'}</Strong> out of <Strong>{totalIssuesInInstance || 'loading...'}</Strong></Text>
@@ -189,7 +185,6 @@ export default function () {
             ))}
           </Table>
         )}
-        <Fragment>
           <Form
             onSubmit={onSubmit}
             submitButtonText={!issuesInTableFormat ? 'Search for issues I have commented on...' : `Load more results ${startAt}`}
@@ -214,8 +209,12 @@ export default function () {
             setAllProjects(resp)
           }} text="Change options" />
           {formState && <Text>{JSON.stringify(formState)}</Text>}
-          <Text>{JSON.stringify(currentUser)}</Text>
-          {/* <Text>{JSON.stringify(allProjects)}</Text>
+          </Fragment>
+          </Tab>
+
+          <Tab label="Rubbish">
+          <Text></Text>
+                      {/* <Text>{JSON.stringify(allProjects)}</Text>
           <Text>{JSON.stringify(aProjectPage)}</Text> */}
           {/* {fakeProjects.map(project => <Text key={project.key}>{project.name}</Text>)} */}
           {/* {aProjectPage.map((project) => {
@@ -224,6 +223,12 @@ export default function () {
           {/* {allProjects.map((project) => { <Text>{project.name}</Text> })} */}
           {allProjects.map(project => <Text>{project.name}</Text>)}
           {/* <Text>{JSON.stringify(allProjects)}</Text> */}
+          <Text>{JSON.stringify(currentUser)}</Text>
+          </Tab>
+        </Tabs>
+
+          
+
         </Fragment>
 
         {/* <Button
@@ -242,7 +247,7 @@ export default function () {
             setCount(count + 1);
           }}
         /> */}
-      </Fragment>
+      {/* </Fragment> */}
     </GlobalPage>
   );
 };
