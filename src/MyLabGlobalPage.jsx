@@ -12,6 +12,7 @@ import ForgeUI, {
   useAction,
   useState,
   useEffect,
+  ButtonSet,
   Button,
   render,
   Macro,
@@ -54,21 +55,26 @@ export default function () {
   const [currentUser, setCurrentUser] = useState(async () => { }); // await getCurrentUser());
   useEffect(async () => {
     const [
-      customFieldResp,
+      // customFieldResp,
       allProjectsResp,
       totalIssuesInInstanceResp,
       currentUserResp
     ] = await Promise.all([
-      getCustomFieldInfo(),
+      // getCustomFieldInfo(),
       getAllProjects(),
       getTotalIssuesInInstance(),
       getCurrentUser(),
     ]);
-    setCustomFieldInfo(customFieldResp);
+    // setCustomFieldInfo(customFieldResp);
     setAllProjects(allProjectsResp);
     setTotalIssuesInInstance(totalIssuesInInstanceResp);
     setCurrentUser(currentUserResp);
   }, []);
+
+  const handleGetCustomFieldInfo = async () => {
+    const customFieldInfo = await getCustomFieldInfo();
+    setCustomFieldInfo(customFieldInfo);
+  };
 
   const [options, setOptions] = useState(
     async () => {
@@ -165,7 +171,7 @@ export default function () {
                 <Select label="Filter by projects?" name="projects" isMulti placeholder="Do not filter">
                   {/* <Option defaultSelected label="All projects" value="one" /> */}
                   {/* {options.map(option => <Option {...option} />)} */}
-                  {allProjects.map((project) => <Option label={project.name} value={project.key} />)}
+                  {allProjects.length !== 0 && allProjects.map((project) => <Option label={project.name} value={project.key} />)}
                   {/* <Option label="Milestone 2" value="two" />
               <Option label="Milestone 3" value="three" /> */}
                 </Select>
@@ -187,13 +193,21 @@ export default function () {
             <Text>{project.name}</Text>
           })} */}
             {/* {allProjects.map((project) => { <Text>{project.name}</Text> })} */}
-            {allProjects.map(project => <Text>{project.name}</Text>)}
+            {allProjects.length !== 0 && allProjects.map(project => <Text>{project.name}</Text>)}
             {/* <Text>{JSON.stringify(allProjects)}</Text> */}
             <Text>{JSON.stringify(currentUser)}</Text>
           </Tab>
           <Tab label="Custom Fields info">
             <Text></Text>
 
+            <ButtonSet>
+              <Button text="Get Custom Fields info" onClick={handleGetCustomFieldInfo} />
+              <Button text="danger" appearance="danger" onClick={() => { }} />
+              <Button text="warning" appearance="warning" onClick={() => { }} />
+              <Button text="link" appearance="link" onClick={() => { }} />
+              <Button text="subtle" appearance="subtle" onClick={() => { }} />
+              <Button text="subtle-link" appearance="subtle-link" onClick={() => { }} />
+            </ButtonSet>
             <Table>
               <Head>
                 <Cell>
