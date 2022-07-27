@@ -32,7 +32,8 @@ import {
   getCurrentUser,
   getAProjectPage,
   getAllProjects,
-  getTotalIssuesInInstance
+  getTotalIssuesInInstance,
+  getAllIssuesCommentedByUser,
 } from './restApiCalls';
 
 
@@ -116,6 +117,8 @@ export default function () {
      *    products: ['jira']
      * }
      */
+    // {"search":"one","user":"5d19ec2b0fa0030d15fc5ee2","projects":["GSP","FT"]}
+    await getAllIssuesCommentedByUser(currentUser, ['JS', 'DS']);
     setFormState(formData);
   };
 

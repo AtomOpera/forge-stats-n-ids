@@ -1,5 +1,39 @@
 import api, { route } from '@forge/api';
 
+export const getAllIssuesCommentedByUser = async (userAccountId, projects) => {
+  // const currentIssues = [...allIssues];
+  const allProjects = 'project is not EMPTY';
+  const startAt = 0;
+  const maxResults = 50;
+  let count = 0;
+  const paginated = `&startAt=${startAt}&maxResults=${maxResults}`;
+  const KTProject = 'project = "KT"';
+  const result = await api
+    .asApp()
+    .requestJira(
+      route`/rest/api/3/search?jql=project is not EMPTY&startAt=0&maxResults=50&fields=summary,comment`
+      // route`/rest/api/3/search?jql=${allProjects}` // ${paginated}&fields=summary,comment`
+    );
+
+
+  const json = await result.json();
+  console.log(json);
+  // const issuesCommented = getIssuesCommentedByUser(json, userAccountId);
+  // setAllIssues(JSON.stringify(json, null, 2));
+  return json;
+};
+
+export const getIssuesCommentedByUser = (issues, userAccountId) => {
+  const issuesCommentedByUser = issues.filter((issue) => {
+    return issue.fields.comment.comments.some((comment) => {
+      return comment.author.accountId === userAccountId;
+    })
+  });
+  // console.log('issue.fields.comment.comments', issues[0].fields.comment.comments);
+  // console.log('issuesCommentedByUser', issuesCommentedByUser);
+  return issuesCommentedByUser;
+};
+
 export async function getCustomFieldInfo() {
   const maxResults = 100; // 50;
   let startAt = 0;
