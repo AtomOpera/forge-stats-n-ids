@@ -16,6 +16,7 @@ import ForgeUI, {
   Button,
   render,
   Macro,
+  Link,
   Table,
   Head,
   Cell,
@@ -26,7 +27,8 @@ import ForgeUI, {
   Option,
   UserPicker,
 } from '@forge/ui';
-// import api, { route } from '@forge/api';
+// import { route } from '@forge/api';
+// import { router } from '@forge/bridge';
 import {
   getCustomFieldInfo,
   getCurrentUser,
@@ -34,6 +36,7 @@ import {
   getAllProjects,
   getTotalIssuesInInstance,
   getAllIssuesCommentedByUser,
+  getIssuesInTableFormat,
 } from './restApiCalls';
 
 
@@ -118,8 +121,11 @@ export default function () {
      * }
      */
     // {"search":"one","user":"5d19ec2b0fa0030d15fc5ee2","projects":["GSP","FT"]}
-    await getAllIssuesCommentedByUser(currentUser, ['JS', 'DS']);
+    const commentedByUser = await getAllIssuesCommentedByUser(currentUser.accountId, ['JS', 'DS']);
     setFormState(formData);
+    setTotalComentedIssues(commentedByUser.totalIssuesFound);
+    // getIssuesInTableFormat(commentedByUser.issues);
+    setIssuesInTableFormat(getIssuesInTableFormat(commentedByUser.issues));
   };
 
   return (
@@ -129,7 +135,7 @@ export default function () {
           <Tab label="Welcome">
             <Text></Text>
             <Fragment>
-              <Text>Hello <Strong>{currentUser?.displayName || 'loading...'}</Strong> from MyForgeLabGlobalPage</Text>
+              <Text>Hello <Strong>{currentUser?.displayName || 'loading...'}</Strong>, this is MyForgeLabGlobalPage.jsx</Text>
               {totalCommentedIssues
                 ? (
                   <Text>Total issues found <Strong>{totalCommentedIssues || 'loading...'}</Strong> out of <Strong>{totalIssuesInInstance || 'loading...'}</Strong></Text>
@@ -138,28 +144,6 @@ export default function () {
                   <Text>Total issues in your Jira instance: <Strong>{totalIssuesInInstance || 'loading...'}</Strong></Text>
                 )}
 
-              {issuesInTableFormat && (
-                <Table>
-                  <Head>
-                    <Cell>
-                      <Text>Issue Key</Text>
-                    </Cell>
-                    <Cell>
-                      <Text>Summary</Text>
-                    </Cell>
-                  </Head>
-                  {issuesInTableFormat?.map(issue => (
-                    <Row>
-                      <Cell>
-                        <Text>{issue.key}</Text>
-                      </Cell>
-                      <Cell>
-                        <Text>{issue.summary}</Text>
-                      </Cell>
-                    </Row>
-                  ))}
-                </Table>
-              )}
               <Form
                 onSubmit={onSubmit}
                 submitButtonText={!issuesInTableFormat ? 'Search for issues I have commented on...' : `Load more results ${startAt}`}
@@ -184,6 +168,45 @@ export default function () {
                 setAllProjects(resp)
               }} text="Change options" />
               {formState && <Text>{JSON.stringify(formState)}</Text>}
+              {issuesInTableFormat && (
+                <Table>
+                  <Head>
+                    <Cell>
+                      <Text>Issue Key</Text>
+                    </Cell>
+                    <Cell>
+                      <Text>Link</Text>
+                    </Cell>
+                    <Cell>
+                      <Text>Summary</Text>
+                    </Cell>
+                  </Head>
+                  {issuesInTableFormat?.map(issue => (
+                    <Row>
+                      <Cell>
+                        <Text>{issue.key}</Text>
+                      </Cell>
+                      <Cell>
+                        <Text>
+                          <Link
+                            href={`https://abri003.atlassian.net/browse/${issue.key}`}
+                            appearance="button"
+                            openNewTab
+                          >{issue.key}</Link></Text>
+                        {/* <Button
+                          text={issue.key}
+                          onClick={() => {
+                            router.open(`https://abri003.atlassian.net/browse/${issue.key}`);
+                          }}
+                        /> */}
+                      </Cell>
+                      <Cell>
+                        <Text>{issue.summary}</Text>
+                      </Cell>
+                    </Row>
+                  ))}
+                </Table>
+              )}
             </Fragment>
           </Tab>
 

@@ -17,14 +17,18 @@ export const getAllIssuesCommentedByUser = async (userAccountId, projects) => {
 
 
   const json = await result.json();
-  console.log(json);
-  // const issuesCommented = getIssuesCommentedByUser(json, userAccountId);
+  // console.log(json);
+  const issuesCommented = getIssuesCommentedByUser(json.issues, userAccountId);
+  const totalIssuesFound = issuesCommented.length;
+  // console.log(issuesCommented);
   // setAllIssues(JSON.stringify(json, null, 2));
-  return json;
+  return { totalIssuesFound, issues: issuesCommented };
 };
 
 export const getIssuesCommentedByUser = (issues, userAccountId) => {
   const issuesCommentedByUser = issues.filter((issue) => {
+    // console.log(issue.fields.comment);
+    // console.log({ userAccountId });
     return issue.fields.comment.comments.some((comment) => {
       return comment.author.accountId === userAccountId;
     })
@@ -32,6 +36,25 @@ export const getIssuesCommentedByUser = (issues, userAccountId) => {
   // console.log('issue.fields.comment.comments', issues[0].fields.comment.comments);
   // console.log('issuesCommentedByUser', issuesCommentedByUser);
   return issuesCommentedByUser;
+};
+
+export const getIssuesInTableFormat = (issues) => {
+  //table format:
+  // [
+  //   {
+  //     key: 'XEN-1',
+  //     status: 'In Progress',
+  //   },
+  //   {
+  //     key: 'XEN-2',
+  //     status: 'To Do',
+  //   },
+  // ]
+  console.log(issues);
+  const issuesInTableFormat = issues.reduce((accumulator, currentValue) => {
+    return [...accumulator, { key: currentValue.key, summary: currentValue.fields.summary }];
+  }, []);
+  return issuesInTableFormat;
 };
 
 export async function getCustomFieldInfo() {
