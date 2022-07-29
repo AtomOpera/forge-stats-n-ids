@@ -1,27 +1,28 @@
 import api, { route } from '@forge/api';
 
+export const getInstance = async () => {
+  const response = await api
+    .requestJira(`/rest/applinks/latest/manifest`);
+  const results = await response.text();
+  const jurl = /\<url\>(.*)\<\/url\>/;
+  return jurl.exec(results)[1];
+}
+
 export const getAllIssuesCommentedByUser = async (userAccountId, projects) => {
-  // const currentIssues = [...allIssues];
-  const allProjects = 'project is not EMPTY';
   const startAt = 0;
   const maxResults = 50;
+  const projectsQuery = projects.length !== 0 ? `project in (${projects})` : 'project is not EMPTY';
   let count = 0;
   const paginated = `&startAt=${startAt}&maxResults=${maxResults}`;
-  const KTProject = 'project = "KT"';
+  console.log(`/rest/api/3/search?jql=${projectsQuery}&startAt=0&maxResults=50&fields=summary,comment`);
   const result = await api
     .asApp()
     .requestJira(
-      route`/rest/api/3/search?jql=project is not EMPTY&startAt=0&maxResults=50&fields=summary,comment`
-      // route`/rest/api/3/search?jql=${allProjects}` // ${paginated}&fields=summary,comment`
+      route`/rest/api/3/search?jql=${projectsQuery}&startAt=0&maxResults=50&fields=summary,comment`
     );
-
-
   const json = await result.json();
-  // console.log(json);
   const issuesCommented = getIssuesCommentedByUser(json.issues, userAccountId);
   const totalIssuesFound = issuesCommented.length;
-  // console.log(issuesCommented);
-  // setAllIssues(JSON.stringify(json, null, 2));
   return { totalIssuesFound, issues: issuesCommented };
 };
 
@@ -50,7 +51,7 @@ export const getIssuesInTableFormat = (issues) => {
   //     status: 'To Do',
   //   },
   // ]
-  console.log(issues);
+  // console.log(issues);
   const issuesInTableFormat = issues.reduce((accumulator, currentValue) => {
     return [...accumulator, { key: currentValue.key, summary: currentValue.fields.summary }];
   }, []);

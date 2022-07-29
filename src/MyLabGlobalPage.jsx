@@ -121,12 +121,16 @@ export default function () {
      * }
      */
     // {"search":"one","user":"5d19ec2b0fa0030d15fc5ee2","projects":["GSP","FT"]}
-    const commentedByUser = await getAllIssuesCommentedByUser(currentUser.accountId, ['JS', 'DS']);
+    // console.log(formData.projects);
+    const commentedByUser = await getAllIssuesCommentedByUser(currentUser.accountId, formData.projects);
     setFormState(formData);
     setTotalComentedIssues(commentedByUser.totalIssuesFound);
     // getIssuesInTableFormat(commentedByUser.issues);
     setIssuesInTableFormat(getIssuesInTableFormat(commentedByUser.issues));
   };
+
+  // console.log(formState && formState.projects.some((project) => "FT" === project));
+  // console.log(formState);
 
   return (
     <GlobalPage>
@@ -158,15 +162,23 @@ export default function () {
                 <Select label="Filter by projects?" name="projects" isMulti placeholder="Do not filter">
                   {/* <Option defaultSelected label="All projects" value="one" /> */}
                   {/* {options.map(option => <Option {...option} />)} */}
-                  {allProjects.length !== 0 && allProjects.map((project) => <Option label={project.name} value={project.key} />)}
+                  {allProjects.length !== 0 && allProjects.map((project) => (
+                    <Option
+                      defaultSelected={formState && formState.projects.find((p) => p === project.key)}
+                      label={project.name}
+                      value={project.key}
+                    />
+                  ))}
                   {/* <Option label="Milestone 2" value="two" />
               <Option label="Milestone 3" value="three" /> */}
                 </Select>
+                {/* <Text>{JSON.stringify(formState && formState.projects)}</Text>
+                <Text>{JSON.stringify(formState && formState.projects.some((project) => "FT" === project))}</Text> */}
               </Form>
-              <Button onClick={async () => {
+              {/* <Button onClick={async () => {
                 const resp = await getAllProjects();
                 setAllProjects(resp)
-              }} text="Change options" />
+              }} text="Change options" /> */}
               {formState && <Text>{JSON.stringify(formState)}</Text>}
               {issuesInTableFormat && (
                 <Table>
