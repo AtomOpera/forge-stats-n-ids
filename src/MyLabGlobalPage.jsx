@@ -37,7 +37,9 @@ import {
   getTotalIssuesInInstance,
   getAllIssuesCommentedByUser,
   getIssuesInTableFormat,
+  getInstance,
 } from './restApiCalls';
+import { TabIssuesCommentedBy } from './TabIssuesCommentedBy';
 
 
 export default function () {
@@ -45,6 +47,8 @@ export default function () {
   const [formState, setFormState] = useState(undefined);
 
   const [aProjectPage, setAProjectPage] = useState(async () => await getAProjectPage());
+
+  const [instance, setInstance] = useState(undefined);
 
   // NON parallelize all REST API calls to Jira
   // const [customFieldInfo, setCustomFieldInfo] = useState(async () => await getCustomFieldInfo());
@@ -62,17 +66,20 @@ export default function () {
       // customFieldResp,
       allProjectsResp,
       totalIssuesInInstanceResp,
-      currentUserResp
+      currentUserResp,
+      currentinstance,
     ] = await Promise.all([
       // getCustomFieldInfo(),
       getAllProjects(),
       getTotalIssuesInInstance(),
       getCurrentUser(),
+      getInstance(),
     ]);
     // setCustomFieldInfo(customFieldResp);
     setAllProjects(allProjectsResp);
     setTotalIssuesInInstance(totalIssuesInInstanceResp);
     setCurrentUser(currentUserResp);
+    setInstance(currentinstance);
   }, []);
 
   const handleGetCustomFieldInfo = async () => {
@@ -139,6 +146,7 @@ export default function () {
           <Tab label="Welcome">
             <Text></Text>
             <Fragment>
+              <Text>{instance}</Text>
               <Text>Hello <Strong>{currentUser?.displayName || 'loading...'}</Strong>, this is MyForgeLabGlobalPage.jsx</Text>
               {totalCommentedIssues
                 ? (
@@ -187,21 +195,15 @@ export default function () {
                       <Text>Issue Key</Text>
                     </Cell>
                     <Cell>
-                      <Text>Link</Text>
-                    </Cell>
-                    <Cell>
                       <Text>Summary</Text>
                     </Cell>
                   </Head>
                   {issuesInTableFormat?.map(issue => (
                     <Row>
                       <Cell>
-                        <Text>{issue.key}</Text>
-                      </Cell>
-                      <Cell>
                         <Text>
                           <Link
-                            href={`https://abri003.atlassian.net/browse/${issue.key}`}
+                            href={`${instance}/browse/${issue.key}`}
                             appearance="button"
                             openNewTab
                           >{issue.key}</Link></Text>
@@ -221,6 +223,8 @@ export default function () {
               )}
             </Fragment>
           </Tab>
+
+          <TabIssuesCommentedBy />
 
           <Tab label="Rubbish">
             <Text></Text>

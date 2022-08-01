@@ -1,8 +1,9 @@
 import api, { route } from '@forge/api';
 
 export const getInstance = async () => {
+  // return "lalala";
   const response = await api
-    .requestJira(`/rest/applinks/latest/manifest`);
+    .requestJira(route`/rest/applinks/latest/manifest`);
   const results = await response.text();
   const jurl = /\<url\>(.*)\<\/url\>/;
   return jurl.exec(results)[1];
