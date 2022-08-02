@@ -1,4 +1,3 @@
-// import React from 'react';
 import ForgeUI, {
   ProjectPage,
   Tabs,
@@ -91,13 +90,16 @@ export const TabIssuesCommentedBy = () => {
     <Tab label="Issues commented by user">
       <Text></Text>
       <Fragment>
-        {totalCommentedIssues
+        {/* {totalCommentedIssues && (
+          <Text>Total issues found <Strong>{totalCommentedIssues || 'loading...'}</Strong> out of <Strong>{totalIssuesInInstance || 'loading...'}</Strong></Text>
+        )} */}
+        {/* {totalCommentedIssues 
           ? (
             <Text>Total issues found <Strong>{totalCommentedIssues || 'loading...'}</Strong> out of <Strong>{totalIssuesInInstance || 'loading...'}</Strong></Text>
           )
           : (
             <Text>Total issues in your Jira instance: <Strong>{totalIssuesInInstance || 'loading...'}</Strong></Text>
-          )}
+          )} */}
 
         <Form
           onSubmit={onSubmit}
