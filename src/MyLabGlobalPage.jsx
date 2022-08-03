@@ -41,6 +41,8 @@ import {
 } from './restApiCalls';
 import { TabIssuesCommentedBy } from './TabIssuesCommentedBy';
 import { TabWelcome } from './TabWelcome';
+import { TabCustomFieldsinfo } from './TabCustomFieldsinfo';
+
 
 
 
@@ -91,10 +93,7 @@ export default function () {
   //   // setOptions(projs);
   // }, []);
 
-  const handleGetCustomFieldInfo = async () => {
-    const customFieldInfo = await getCustomFieldInfo();
-    setCustomFieldInfo(customFieldInfo);
-  };
+
 
   // const [options, setOptions] = useState(
   //   async () => {
@@ -156,6 +155,8 @@ export default function () {
 
           <TabIssuesCommentedBy />
 
+          <TabCustomFieldsinfo />
+
           <Tab label="Rubbish">
             <Text></Text>
             {/* <Text>{JSON.stringify(allProjects)}</Text>
@@ -168,41 +169,6 @@ export default function () {
             {/* {allProjects.length !== 0 && allProjects.map(project => <Text>{project.name}</Text>)} */}
             {/* <Text>{JSON.stringify(allProjects)}</Text> */}
             {/* <Text>{JSON.stringify(currentUser)}</Text> */}
-          </Tab>
-          <Tab label="Custom Fields info">
-            <Text></Text>
-
-            <ButtonSet>
-              <Button text="Get Custom Fields info" onClick={handleGetCustomFieldInfo} />
-              <Button text="danger" appearance="danger" onClick={() => { }} />
-              <Button text="warning" appearance="warning" onClick={() => { }} />
-              <Button text="link" appearance="link" onClick={() => { }} />
-              <Button text="subtle" appearance="subtle" onClick={() => { }} />
-              <Button text="subtle-link" appearance="subtle-link" onClick={() => { }} />
-            </ButtonSet>
-            <Table>
-              <Head>
-                <Cell>
-                  <Text>Custom Field Name</Text>
-                </Cell>
-                <Cell>
-                  <Text>CustomField Id</Text>
-                </Cell>
-              </Head>
-              {customFieldInfo?.map(customField => (
-                <Row>
-                  <Cell>
-                    <Text>{customField.name}</Text>
-                  </Cell>
-                  <Cell>
-                    <Text>{customField.id}</Text>
-                  </Cell>
-                </Row>
-              ))}
-            </Table>
-
-            {customFieldInfo.map(customField => <Text>{customField.name}</Text>)}
-
           </Tab>
         </Tabs>
 
