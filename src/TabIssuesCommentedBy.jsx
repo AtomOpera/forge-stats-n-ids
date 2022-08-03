@@ -16,6 +16,7 @@ import ForgeUI, {
   Button,
   render,
   Macro,
+  ModalDialog,
   Link,
   Table,
   Head,
@@ -48,6 +49,7 @@ export const TabIssuesCommentedBy = () => {
   const [totalCommentedIssues, setTotalComentedIssues] = useState(0);
   const [issuesInTableFormat, setIssuesInTableFormat] = useState();
   const [startAt, setstartAt] = useState(0);
+  const [isOpen, setOpen] = useState(false);
   useEffect(async () => {
     const [
       // customFieldResp,
@@ -68,6 +70,12 @@ export const TabIssuesCommentedBy = () => {
     setCurrentUser(currentUserResp);
     setInstance(currentinstance);
   }, []);
+
+  const handleOpenDialog = async () => {
+    setOpen(true);
+    const currentProjects = await getAllProjects();
+    setAllProjects(currentProjects);
+  };
 
   const onSubmit = async (formData) => {
     /**
@@ -90,6 +98,33 @@ export const TabIssuesCommentedBy = () => {
     <Tab label="Issues commented by user">
       <Text></Text>
       <Fragment>
+      <Button
+        text={'Filter'}
+        onClick={async () => await handleOpenDialog()}
+      />
+      {isOpen && (
+        <ModalDialog header="Filter search" onClose={() => setOpen(false)}>
+          <Form
+            onSubmit={data => {
+              // setSize(data.size);
+              setOpen(false);
+            }}
+          >
+            <Select label="Filter by projects?" name="projects" isMulti placeholder="Do not filter">
+            {/* <Option defaultSelected label="All projects" value="one" /> */}
+            {/* {options.map(option => <Option {...option} />)} */}
+            {allProjects.length !== 0 && allProjects.map((project) => (
+              <Option
+                defaultSelected={formState && formState.projects.find((p) => p === project.key)}
+                label={project.name}
+                value={project.key} />
+            ))}
+            {/* <Option label="Milestone 2" value="two" />
+<Option label="Milestone 3" value="three" /> */}
+            </Select>
+          </Form>
+        </ModalDialog>
+      )}
         {/* {totalCommentedIssues && (
           <Text>Total issues found <Strong>{totalCommentedIssues || 'loading...'}</Strong> out of <Strong>{totalIssuesInInstance || 'loading...'}</Strong></Text>
         )} */}
@@ -105,24 +140,20 @@ export const TabIssuesCommentedBy = () => {
           onSubmit={onSubmit}
           submitButtonText={!issuesInTableFormat ? 'Search for issues I have commented on...' : `Load more results ${startAt}`}
         >
-          <Select label="Search for?" name="search">
+          {/* <Select label="Search for?" name="search">
             <Option defaultSelected label="Issues commented by user" value="one" />
             <Option label="Issues blablabla" value="two" />
             <Option label="Issues blablabla" value="three" />
-          </Select>
-          <UserPicker label="User" name="user" defaultValue={currentUser?.accountId} />
-          <Select label="Filter by projects?" name="projects" isMulti placeholder="Do not filter">
-            {/* <Option defaultSelected label="All projects" value="one" /> */}
-            {/* {options.map(option => <Option {...option} />)} */}
+          </Select> */}
+          <UserPicker label="Search for issues commented by" name="user" defaultValue={currentUser?.accountId} />
+          {/* <Select label="Filter by projects?" name="projects" isMulti placeholder="Do not filter">
             {allProjects.length !== 0 && allProjects.map((project) => (
               <Option
                 defaultSelected={formState && formState.projects.find((p) => p === project.key)}
                 label={project.name}
                 value={project.key} />
             ))}
-            {/* <Option label="Milestone 2" value="two" />
-<Option label="Milestone 3" value="three" /> */}
-          </Select>
+          </Select> */}
           {/* <Text>{JSON.stringify(formState && formState.projects)}</Text>
     <Text>{JSON.stringify(formState && formState.projects.some((project) => "FT" === project))}</Text> */}
         </Form>
