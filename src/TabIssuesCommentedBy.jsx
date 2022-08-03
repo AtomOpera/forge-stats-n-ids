@@ -50,6 +50,7 @@ export const TabIssuesCommentedBy = () => {
   const [issuesInTableFormat, setIssuesInTableFormat] = useState();
   const [startAt, setstartAt] = useState(0);
   const [isOpen, setOpen] = useState(false);
+  const [selectedProjects, setSelectedProjects] = useState([]);
   useEffect(async () => {
     const [
       // customFieldResp,
@@ -87,7 +88,7 @@ export const TabIssuesCommentedBy = () => {
      */
     // {"search":"one","user":"5d19ec2b0fa0030d15fc5ee2","projects":["GSP","FT"]}
     // console.log(formData.projects);
-    const commentedByUser = await getAllIssuesCommentedByUser(currentUser.accountId, formData.projects);
+    const commentedByUser = await getAllIssuesCommentedByUser(currentUser.accountId, formData.projects || []);
     setFormState(formData);
     setTotalComentedIssues(commentedByUser.totalIssuesFound);
     // getIssuesInTableFormat(commentedByUser.issues);
@@ -107,6 +108,7 @@ export const TabIssuesCommentedBy = () => {
           <Form
             onSubmit={data => {
               // setSize(data.size);
+              setSelectedProjects(data.projects);
               setOpen(false);
             }}
           >
@@ -115,7 +117,7 @@ export const TabIssuesCommentedBy = () => {
             {/* {options.map(option => <Option {...option} />)} */}
             {allProjects.length !== 0 && allProjects.map((project) => (
               <Option
-                defaultSelected={formState && formState.projects.find((p) => p === project.key)}
+                defaultSelected={selectedProjects.find((p) => p === project.key)}
                 label={project.name}
                 value={project.key} />
             ))}
