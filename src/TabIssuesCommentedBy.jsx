@@ -52,19 +52,19 @@ export const TabIssuesCommentedBy = () => {
     const [
       // customFieldResp,
       allProjectsResp,
-      totalIssuesInInstanceResp,
+      // totalIssuesInInstanceResp,
       currentUserResp,
       currentinstance,
     ] = await Promise.all([
       // getCustomFieldInfo(),
       getAllProjects(),
-      getTotalIssuesInInstance(),
+      // getTotalIssuesInInstance(),
       getCurrentUser(),
       getInstance(),
     ]);
     // setCustomFieldInfo(customFieldResp);
     setAllProjects(allProjectsResp);
-    setTotalIssuesInInstance(totalIssuesInInstanceResp);
+    // setTotalIssuesInInstance(totalIssuesInInstanceResp);
     setCurrentUser(currentUserResp);
     setInstance(currentinstance);
   }, []);

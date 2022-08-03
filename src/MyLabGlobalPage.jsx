@@ -61,7 +61,7 @@ export default function () {
   // const [currentUser, setCurrentUser] = useState(async () => await getCurrentUser());
 
   // parallelize all REST API calls to Jira
-  const [customFieldInfo, setCustomFieldInfo] = useState(async () => []); // await getCustomFieldInfo());
+  // const [customFieldInfo, setCustomFieldInfo] = useState(async () => []); // await getCustomFieldInfo());
   // const [allProjects, setAllProjects] = useState(async () => []); // await getAllProjects());
   // const [totalIssuesInInstance, setTotalIssuesInInstance] = useState(async () => []); // await getTotalIssuesInInstance());
   // const [currentUser, setCurrentUser] = useState(async () => { }); // await getCurrentUser());
@@ -109,13 +109,13 @@ export default function () {
   //   // ]
   // )
 
-  const [allIssues, setAllIssues] = useState('loading...');
-  const [issuesCommentedByUser, setIssuesCommentedByUser] = useState('loading...');
-  const [issuesInTableFormat, setIssuesInTableFormat] = useState();
-  const [count, setCount] = useState(0);
-  const [startAt, setstartAt] = useState(0);
-  const [totalIssues, setTotalIssues] = useState(0);
-  const [totalCommentedIssues, setTotalComentedIssues] = useState(0);
+  // const [allIssues, setAllIssues] = useState('loading...');
+  // const [issuesCommentedByUser, setIssuesCommentedByUser] = useState('loading...');
+  // const [issuesInTableFormat, setIssuesInTableFormat] = useState();
+  // const [count, setCount] = useState(0);
+  // const [startAt, setstartAt] = useState(0);
+  // const [totalIssues, setTotalIssues] = useState(0);
+  // const [totalCommentedIssues, setTotalComentedIssues] = useState(0);
 
   // const actionButtons = [
   //   <Button
