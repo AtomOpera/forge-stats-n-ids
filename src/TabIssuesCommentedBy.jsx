@@ -54,19 +54,19 @@ export const TabIssuesCommentedBy = () => {
   useEffect(async () => {
     const [
       // customFieldResp,
-      allProjectsResp,
+      // allProjectsResp,
       // totalIssuesInInstanceResp,
       currentUserResp,
       currentinstance,
     ] = await Promise.all([
       // getCustomFieldInfo(),
-      getAllProjects(),
+      // getAllProjects(),
       // getTotalIssuesInInstance(),
       getCurrentUser(),
       getInstance(),
     ]);
     // setCustomFieldInfo(customFieldResp);
-    setAllProjects(allProjectsResp);
+    // setAllProjects(allProjectsResp);
     // setTotalIssuesInInstance(totalIssuesInInstanceResp);
     setCurrentUser(currentUserResp);
     setInstance(currentinstance);
@@ -99,34 +99,37 @@ export const TabIssuesCommentedBy = () => {
     <Tab label="Issues commented by user">
       <Text></Text>
       <Fragment>
-      <Button
-        text={'Filter'}
-        onClick={async () => await handleOpenDialog()}
-      />
-      {isOpen && (
-        <ModalDialog header="Filter search" onClose={() => setOpen(false)}>
-          <Form
-            onSubmit={data => {
-              // setSize(data.size);
-              setSelectedProjects(data.projects);
-              setOpen(false);
-            }}
-          >
-            <Select label="Filter by projects?" name="projects" isMulti placeholder="Do not filter">
-            {/* <Option defaultSelected label="All projects" value="one" /> */}
-            {/* {options.map(option => <Option {...option} />)} */}
-            {allProjects.length !== 0 && allProjects.map((project) => (
-              <Option
-                defaultSelected={selectedProjects.find((p) => p === project.key)}
-                label={project.name}
-                value={project.key} />
-            ))}
-            {/* <Option label="Milestone 2" value="two" />
+        <ButtonSet>
+          <Button text="Get issues commented by user" onClick={() => { }} />
+          <Button
+            text={'Filter'}
+            onClick={async () => await handleOpenDialog()}
+          />
+        </ButtonSet>
+        {isOpen && (
+          <ModalDialog header="Filter search" onClose={() => setOpen(false)}>
+            <Form
+              onSubmit={data => {
+                // setSize(data.size);
+                setSelectedProjects(data.projects);
+                setOpen(false);
+              }}
+            >
+              <Select label="Filter by projects?" name="projects" isMulti placeholder="Do not filter">
+                {/* <Option defaultSelected label="All projects" value="one" /> */}
+                {/* {options.map(option => <Option {...option} />)} */}
+                {allProjects.length !== 0 && allProjects.map((project) => (
+                  <Option
+                    defaultSelected={selectedProjects.find((p) => p === project.key)}
+                    label={project.name}
+                    value={project.key} />
+                ))}
+                {/* <Option label="Milestone 2" value="two" />
 <Option label="Milestone 3" value="three" /> */}
-            </Select>
-          </Form>
-        </ModalDialog>
-      )}
+              </Select>
+            </Form>
+          </ModalDialog>
+        )}
         {/* {totalCommentedIssues && (
           <Text>Total issues found <Strong>{totalCommentedIssues || 'loading...'}</Strong> out of <Strong>{totalIssuesInInstance || 'loading...'}</Strong></Text>
         )} */}

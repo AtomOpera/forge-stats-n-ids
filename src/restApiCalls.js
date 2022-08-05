@@ -63,38 +63,68 @@ export async function getCustomFieldInfo() {
   const maxResults = 100; // 50;
   let startAt = 0;
   let resource;
+  let fullResource;
   let customFields = [];
   let page;
   // let parsedPage = { isLast: false };
   let isLast = false;
+  let prevInfLoop = 0;
 
   // Await in loop as next page depends on previous page.
   do {
     // eslint-disable-next-line no-await-in-loop
-    // resource = `search?startAt=${startAt}&maxResults=${maxResults}&type=custom`
+    // fullResource = `/rest/api/2/field/search?startAt=${startAt}&maxResults=${maxResults}&type=custom`;
+    // resource = `field/search?startAt=${startAt}&maxResults=${maxResults}&type=custom`;
+    // console.log(resource);
+    // fullResource = route`/rest/api/2/${resource}`;
     const jsonResponse = await api
       .asApp()
       .requestJira(
         // route`/rest/api/2/field/${resource}`
-        route`/rest/api/2/field/search?startAt=${startAt}&maxResults=${maxResults}&type=custom`
+        // route`/rest/api/2/${resource}`
+        // route is very picky 
+        // find out more here: https://developer.atlassian.com/platform/forge/runtime-reference/product-fetch-api/#route
+        route`/rest/api/2/field/search?startAt=${startAt}&maxResults=${maxResults}&type=custom` // ${resource}`
         // route`/rest/api/3/search?jql=${allProjects}` // ${paginated}&fields=summary,comment`
       );
     // page = await AP.request(`/rest/api/2/field/${resource}`);
     // parsedPage = await JSON.parse(page.body);
     const parsedPage = await jsonResponse.json();
+    // console.log(route`/rest/api/2/${resource}`);
+    // console.log(parsedPage.startAt);
     customFields = [...customFields, ...parsedPage.values];
     startAt += parsedPage.values.length;
     isLast = parsedPage.isLast;
+    prevInfLoop += 1;
+    console.log(prevInfLoop);
     // console.log({ parsedPage })
     // console.log(parsedPage.isLast)
     // console.log(parsedPage.values.length)
     // console.log(parsedPage.values.length)
     // console.log(startAt)
-  } while (!isLast);
+  } while (!isLast && prevInfLoop < 10);
   // } while (startAt !== 10);
 
   // console.log(request);
   return customFields;
+};
+
+export const getTotalCustomFieldsInInstance = async () => {
+  const jsonResponse = await api
+    .asApp()
+    .requestJira(
+      // route`/rest/api/2/field/${resource}`
+      // route`/rest/api/2/${resource}`
+      // route is very picky 
+      // find out more here: https://developer.atlassian.com/platform/forge/runtime-reference/product-fetch-api/#route
+      route`/rest/api/2/field/search?startAt=0&maxResults=1&type=custom` // ${resource}`
+      // route`/rest/api/3/search?jql=${allProjects}` // ${paginated}&fields=summary,comment`
+    );
+  // page = await AP.request(`/rest/api/2/field/${resource}`);
+  // parsedPage = await JSON.parse(page.body);
+  const parsedPage = await jsonResponse.json();
+  return parsedPage.total;
+
 };
 
 export const getCurrentUser = async () => {
@@ -147,6 +177,17 @@ export const getAllProjects = async () => {
   // console.log(json);
   // setAllIssues(JSON.stringify(response, null, 2));
   return projects;
+};
+
+export const getTotalProjectsInInstance = async () => {
+  const jsonResponse = await api
+    .asUser()
+    .requestJira(
+      route`/rest/api/3/project/search?startAt=0&maxResults=1`
+      // route`/rest/api/3/search?jql=${allProjects}` // ${paginated}&fields=summary,comment`
+    );
+  const response = await jsonResponse.json();
+  return response.total;
 };
 
 export const getTotalIssuesInInstance = async () => {
