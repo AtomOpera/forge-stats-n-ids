@@ -48,7 +48,7 @@ export const TabCustomFieldsinfo = () => {
   const [customFieldInfo, setCustomFieldInfo] = useState(async () => []);
 
   return (
-    <Tab label="Custom Fields info">
+    <Tab label="☰ Custom Fields info">
       <Text></Text>
 
       <ButtonSet>

@@ -14,6 +14,7 @@ import ForgeUI, {
   useEffect,
   ButtonSet,
   Button,
+  Tooltip,
   render,
   Macro,
   Link,
@@ -31,24 +32,28 @@ import {
   getTotalIssuesInInstance,
   getTotalProjectsInInstance,
   getTotalCustomFieldsInInstance,
+  getTotalFiltersInInstance,
 } from './restApiCalls';
 
 export const TabWelcome = () => {
   const [totalIssues, setTotalIssues] = useState();
   const [totalProjects, setTotalProjects] = useState();
   const [totalCustomFields, setTotalCustomFields] = useState();
+  const [totalFilters, setTotalFilters] = useState();
 
   const handleGetSystemInfo = async () => {
     const totalIssues = await getTotalIssuesInInstance();
     const totalProjects = await getTotalProjectsInInstance();
     const totalCustomFields = await getTotalCustomFieldsInInstance();
+    const totalFilters = await getTotalFiltersInInstance();
     setTotalIssues(totalIssues);
     setTotalProjects(totalProjects);
     setTotalCustomFields(totalCustomFields);
+    setTotalFilters(totalFilters);
   };
 
   return (
-    <Tab label="Welcome">
+    <Tab label="💫 Welcome">
       <Text></Text>
       <Fragment>
         <ButtonSet>
@@ -59,11 +64,14 @@ export const TabWelcome = () => {
         <Button text="subtle" appearance="subtle" onClick={() => { }} />
         <Button text="subtle-link" appearance="subtle-link" onClick={() => { }} /> */}
         </ButtonSet>
+        <Tooltip text="Total Issues in this instance"><Text>hey</Text></Tooltip>
         {!totalIssues && <Text></Text>}
-        {totalIssues && <Text>Total issues in this instance: <Strong>{totalIssues}</Strong></Text>}
-        {totalProjects && <Text>Total projects in this instance: <Strong>{totalProjects}</Strong></Text>}
-        {totalCustomFields && <Text>Total custom fields in this instance: <Strong>{totalCustomFields}</Strong></Text>}
-
+        <Tooltip text="Total Issues in this instance">
+          {totalIssues && <Text>Issues: <Strong>{totalIssues}</Strong></Text>}
+        </Tooltip>
+        {totalProjects && <Tooltip text="Total Projects in this instance"><Text>Projects: <Strong>{totalProjects}</Strong></Text></Tooltip>}
+        {totalCustomFields && <Tooltip text="Total Fields in this instance"><Text>Fields: <Strong>{totalCustomFields}</Strong></Text></Tooltip>}
+        {totalFilters && <Tooltip text="Total Filters in this instance"><Text>Filters: <Strong>{totalFilters}</Strong></Text></Tooltip>}
       </Fragment>
     </Tab>
   );
