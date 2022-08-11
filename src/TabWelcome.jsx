@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import ForgeUI, {
   ProjectPage,
@@ -39,11 +39,11 @@ import {
 } from './restApiCalls';
 
 export const TabWelcome = () => {
-  const [totalIssues, setTotalIssues] = useState();
-  const [totalProjects, setTotalProjects] = useState();
-  const [totalCustomFields, setTotalCustomFields] = useState();
-  const [totalFilters, setTotalFilters] = useState();
-  const [totalBoards, setTotalBoards] = useState();
+  const [totalIssues, setTotalIssues] = useState('Scan to load...');
+  const [totalProjects, setTotalProjects] = useState('Scan to load...');
+  const [totalCustomFields, setTotalCustomFields] = useState('Scan to load...');
+  const [totalFilters, setTotalFilters] = useState('Scan to load...');
+  const [totalBoards, setTotalBoards] = useState('Scan to load...');
 
   const handleGetSystemInfo = async () => {
     const totalIssues = await getTotalIssuesInInstance();
@@ -57,14 +57,15 @@ export const TabWelcome = () => {
     setTotalFilters(totalFilters);
     setTotalBoards(totalBoards);
   };
+  useEffect(async () => {await handleGetSystemInfo();}, []);
 
-  const text1 = (<Text><Strong>{totalProjects}</Strong></Text>);
+  // const text1 = (<Text><Strong>{totalProjects}</Strong></Text>);
   return (
     <Tab label="💫 Welcome">
       <Text></Text>
       <Fragment>
         <ButtonSet>
-          <Button icon="info" text="Get system info" onClick={handleGetSystemInfo} />
+          <Button icon="info" text="Scan Jira" onClick={handleGetSystemInfo} />
           <Button icon="warning" text="Get full health check" onClick={handleGetSystemInfo} />
           {/* <Button text="danger" appearance="danger" onClick={() => { }} />
         <Button text="warning" appearance="warning" onClick={() => { }} />
@@ -95,6 +96,12 @@ export const TabWelcome = () => {
         {totalBoards && <Text>🧰 Boards in Jira: <Strong>{totalBoards}</Strong></Text>}
         {totalBoards && <Text>💠 Screens in Jira: <Strong>{totalBoards}</Strong></Text>}
         {totalBoards && <Text>🧊 Workflows in Jira: <Strong>{totalBoards}</Strong></Text>}
+        <Button
+          icon="issues"
+          appearance="subtle-link"
+          text={`Total issues: ${totalIssues}`}
+          onClick={() => { }} 
+        />
       </Fragment>
     </Tab>
   );
