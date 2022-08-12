@@ -7,8 +7,6 @@ import ForgeUI, {
   Text,
   Strong,
   Code,
-  Badge,
-  StatusLozenge,
   SectionMessage,
   Fragment,
   IssueGlance,
@@ -42,9 +40,8 @@ import {
   getTotalWorkflowsInInstance,
 } from './restApiCalls';
 
-export const TabWelcome = (props) => {
+export const TabWelcomeAlt = (props) => {
   const { state, handleGetSystemInfo } = props;
-  console.log(state);
   // const [totalIssues, setTotalIssues] = useState('Scan to load...');
   // const [totalProjects, setTotalProjects] = useState('Scan to load...');
   // const [totalCustomFields, setTotalCustomFields] = useState('Scan to load...');
@@ -53,7 +50,7 @@ export const TabWelcome = (props) => {
   // const [totalScreens, setTotalScreens] = useState('Scan to load...');
   // const [totalWorkflows, setTotalWorkflows] = useState('Scan to load...');
 
-  // const handleGetSystemInfo = async (props) => {
+  // const handleGetSystemInfo = async () => {
   //   const totalIssues = await getTotalIssuesInInstance();
   //   const totalProjects = await getTotalProjectsInInstance();
   //   const totalCustomFields = await getTotalCustomFieldsInInstance();
@@ -72,7 +69,7 @@ export const TabWelcome = (props) => {
   // useEffect(async () => { await handleGetSystemInfo(); }, []);
 
   return (
-    <Tab label="💫 Home">
+    <Tab label="❤️‍🩹 Health check">
       <Text></Text>
       <Fragment>
         <ButtonSet>
@@ -86,27 +83,76 @@ export const TabWelcome = (props) => {
         <Button text="subtle-link" appearance="subtle-link" onClick={() => { }} /> */}
         </ButtonSet>
 
-        {
-          /**
-           * default = grey (default)
-           * inprogress = blue
-           * moved = yellow
-           * new = purple
-           * success = green
-           * removed = red
-           */
-        }
-        {<Text>📚 Issues in Jira: <StatusLozenge text={state.totalIssues} appearance={state.totalIssues > 1300 ? "default" : "removed"} /></Text>}
-        {<Text>🗂️ Projects in Jira: <StatusLozenge text={state.totalProjects} appearance="inprogress" /></Text>}
-        {<Text>🎫 Fields in Jira: <StatusLozenge text={state.totalCustomFields} appearance="moved" /></Text>}
-        {<Text>🏁 Filters in Jira: <StatusLozenge text={state.totalFilters} appearance="new" /></Text>}
-        {<Text>🧰 Boards in Jira: <StatusLozenge text={state.totalBoards} appearance="success" /></Text>}
-        {<Text>💠 Screens in Jira: <StatusLozenge text={state.totalScreens} appearance="removed" /></Text>}
-        {<Text>🧊 Workflows in Jira: <Strong>{state.totalWorkflows}</Strong></Text>}
+        <Button
+          icon="issues"
+          appearance="subtle"
+          text={`Total issues: ${state.totalIssues}`}
+          onClick={() => { }}
+        />
+        <Button
+          icon="folder"
+          appearance="subtle"
+          text={`Total projects: ${state.totalProjects}`}
+          onClick={() => { }}
+        />
+        <Button
+          icon="detail-view"
+          appearance="subtle"
+          text={`Total fields: ${state.totalCustomFields}`}
+          onClick={() => { }}
+        />
+        <Button
+          icon="filter"
+          appearance="subtle"
+          text={`Total filters: ${state.totalFilters}`}
+          onClick={() => { }}
+        />
+        <Button
+          icon="subtask"
+          appearance="subtle"
+          text={`Total issue types: ${state.totalIssues}`}
+          onClick={() => { }}
+        />
+        <Button
+          icon="board"
+          appearance="subtle"
+          text={`Total boards: ${state.totalBoards}`}
+          onClick={() => { }}
+        />
+        <Button
+          icon="screen"
+          appearance="subtle"
+          text={`Total screens: ${state.totalScreens}`}
+          onClick={() => { }}
+        />
+        <Button
+          icon="bitbucket-branches"
+          appearance="subtle"
+          text={`Total workflows: ${state.totalWorkflows}`}
+          onClick={() => { }}
+        />
         {/* <Button
           icon="issues"
-          appearance="subtle-link"
+          appearance="link"
           text={`Total issues: ${totalIssues}`}
+          onClick={() => { }}
+        />
+        <Button
+          icon="folder"
+          appearance="subtle-link"
+          text={`Total projects: ${totalProjects}`}
+          onClick={() => { }}
+        />
+        <Button
+          icon="detail-view"
+          appearance="subtle"
+          text={`Total fields: ${totalFilters}`}
+          onClick={() => { }}
+        />
+        <Button
+          icon="board"
+          appearance="subtle-link"
+          text={`Total fields: ${totalBoards}`}
           onClick={() => { }}
         /> */}
       </Fragment>

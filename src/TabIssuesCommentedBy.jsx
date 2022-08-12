@@ -96,7 +96,7 @@ export const TabIssuesCommentedBy = () => {
   };
 
   return (
-    <Tab label="Issues commented by user">
+    <Tab label="👩‍💼 Issues commented by user">
       <Text></Text>
       <Fragment>
         <ButtonSet>

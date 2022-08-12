@@ -160,7 +160,40 @@ export const getTotalBoardsInInstance = async () => {
   // parsedPage = await JSON.parse(page.body);
   const parsedPage = await jsonResponse.json();
   return parsedPage.total;
+};
 
+export const getTotalScreensInInstance = async () => {
+  const jsonResponse = await api
+    .asApp()
+    .requestJira(
+      // route`/rest/api/2/field/${resource}`
+      // route`/rest/api/2/${resource}`
+      // route is very picky 
+      // find out more here: https://developer.atlassian.com/platform/forge/runtime-reference/product-fetch-api/#route
+      route`/rest/api/2/screens` // ${resource}`
+      // route`/rest/api/3/search?jql=${allProjects}` // ${paginated}&fields=summary,comment`
+    );
+  // page = await AP.request(`/rest/api/2/field/${resource}`);
+  // parsedPage = await JSON.parse(page.body);
+  const parsedPage = await jsonResponse.json();
+  return parsedPage.total;
+};
+
+export const getTotalWorkflowsInInstance = async () => {
+  const jsonResponse = await api
+    .asApp()
+    .requestJira(
+      // route`/rest/api/2/field/${resource}`
+      // route`/rest/api/2/${resource}`
+      // route is very picky 
+      // find out more here: https://developer.atlassian.com/platform/forge/runtime-reference/product-fetch-api/#route
+      route`/rest/api/2/workflow/search` // ${resource}`
+      // route`/rest/api/3/search?jql=${allProjects}` // ${paginated}&fields=summary,comment`
+    );
+  // page = await AP.request(`/rest/api/2/field/${resource}`);
+  // parsedPage = await JSON.parse(page.body);
+  const parsedPage = await jsonResponse.json();
+  return parsedPage.total;
 };
 
 export const getCurrentUser = async () => {

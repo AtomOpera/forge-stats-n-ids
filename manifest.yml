@@ -36,6 +36,11 @@ permissions:
     - storage:app
     - read:jira-work
     - read:jira-user
+    - read:project:jira
+    - read:screen:jira
+    - read:avatar:jira
+    - read:project-category:jira
+    - manage:jira-project
 
 app:
   id: ari:cloud:ecosystem::app/53ff5d5b-8e5e-4599-9aae-17393b580c6f
