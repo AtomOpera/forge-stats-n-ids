@@ -36,12 +36,20 @@ import {
   getAllIssuesCommentedByUser,
   getIssuesInTableFormat,
   getInstance,
+  getCustomFieldCount,
 } from './restApiCalls';
 
 export const TabCustomFieldsinfo = () => {
 
   const handleGetCustomFieldInfo = async () => {
     const customFieldInfo = await getCustomFieldInfo();
+    let customFieldFullInfo;
+    customFieldInfo?.forEach(async (customField) => {
+      const count = await getCustomFieldCount(customField.schema.customId) || 'N/A';
+      customFieldFullInfo = [...customFieldFullInfo, count ];
+    });
+    // console.log(customFieldInfo);
+    console.log({customFieldFullInfo});
     setCustomFieldInfo(customFieldInfo);
   };
 
@@ -67,11 +75,17 @@ export const TabCustomFieldsinfo = () => {
           <Cell>
             <Text>CustomField Id</Text>
           </Cell>
+          <Cell>
+            <Text>Number of issues</Text>
+          </Cell>
         </Head>
         {customFieldInfo?.map(customField => (
           <Row>
             <Cell>
               <Text>{customField.name}</Text>
+            </Cell>
+            <Cell>
+              <Text>{customField.id}</Text>
             </Cell>
             <Cell>
               <Text>{customField.id}</Text>
