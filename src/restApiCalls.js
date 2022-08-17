@@ -59,22 +59,24 @@ export const getIssuesInTableFormat = (issues) => {
   return issuesInTableFormat;
 };
 
-// TO DO: make this work, prob there is an error returned and this is not picking it up
+// TO DO: this method takes too long
 export async function getCustomFieldCount(fieldId) {
   console.log(fieldId);
-  const jsonResponse = await api
-    .asApp()
-    .requestJira(
-      route`/rest/api/3/search?jql=cf[${fieldId}]`
-      // route`/rest/api/3/search?jql=${allProjects}` // ${paginated}&fields=summary,comment`
-    );
-  console.log({jsonResponse});
-  const response = await jsonResponse.json();
-  // console.log(json);
-  // setAllIssues(JSON.stringify(response, null, 2));
-  
-  console.log({response});
-  return response.total;
+  try {
+    const jsonResponse = await api
+      .asApp()
+      .requestJira(
+        route`/rest/api/3/search?jql=cf[${fieldId}] is not EMPTY`
+        // route`/rest/api/3/search?jql=${allProjects}` // ${paginated}&fields=summary,comment`
+      );
+    // console.log({ jsonResponse });
+    const response = await jsonResponse.json();
+    console.log({ response });
+    // console.log(response.total);
+    return response.total;
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 export async function getCustomFieldInfo() {
@@ -109,7 +111,7 @@ export async function getCustomFieldInfo() {
     startAt += parsedPage.values.length;
     isLast = parsedPage.isLast;
     prevInfLoop += 1;
-    console.log(prevInfLoop);
+    // console.log(prevInfLoop);
     // console.log({ parsedPage })
     // console.log(parsedPage.isLast)
     // console.log(parsedPage.values.length)
@@ -140,12 +142,15 @@ export async function getAllIssues() {
       .requestJira(
         route`/rest/api/3/search?startAt=${startAt}&maxResults=${maxResults}`
       );
+    // console.log(jsonResponse);
     const parsedPage = await jsonResponse.json();
-    customFields = [...customFields, ...parsedPage.values];
-    startAt += parsedPage.values.length;
-    isLast = parsedPage.isLast;
+    console.log(parsedPage);
+    customFields = [...customFields, ...parsedPage.issues];
+    startAt += parsedPage.issues.length;
+    isLast = parsedPage.issues.length === 0 ? true : false;
+    // isLast = parsedPage.isLast;
     prevInfLoop += 1;
-    console.log(prevInfLoop);
+    // console.log(prevInfLoop);
   } while (!isLast && prevInfLoop < 10);
   return customFields;
 };

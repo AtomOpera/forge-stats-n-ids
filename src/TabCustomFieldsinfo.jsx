@@ -37,23 +37,48 @@ import {
   getIssuesInTableFormat,
   getInstance,
   getCustomFieldCount,
+  getAllIssues,
 } from './restApiCalls';
 
 export const TabCustomFieldsinfo = () => {
 
   const handleGetCustomFieldInfo = async () => {
     const customFieldInfo = await getCustomFieldInfo();
-    let customFieldFullInfo;
-    customFieldInfo?.forEach(async (customField) => {
-      const count = await getCustomFieldCount(customField.schema.customId) || 'N/A';
-      customFieldFullInfo = [...customFieldFullInfo, count ];
-    });
+    // const issues = await getAllIssues();
+    // let cfCount = 0;
+
+    // const fullCFI = customFieldInfo.map((cf) => {
+    //   let cfCount = 0;
+    //   issues.forEach((issue) => {
+    //     if (issue.fields[cf.id] !== null) cfCount += 1;
+    //   });
+    //   return { ...cf, count: cfCount };
+    // });
+    // console.log(customFieldInfo)
+
+    let customFieldFullInfo = [];
+    let firstOnes = 0;
+
+    for (const customField of customFieldInfo) {
+      firstOnes += 1;
+      console.log(customField);
+      if (customField?.schema?.customId) {
+        const count = await getCustomFieldCount(customField.schema.customId);
+        console.log(count);
+        customFieldFullInfo = [...customFieldFullInfo, count];
+        console.log(customFieldFullInfo);
+      }
+      if (firstOnes >= 15) break;
+    }
     // console.log(customFieldInfo);
-    console.log({customFieldFullInfo});
+    console.log({ customFieldFullInfo });
+    // console.log(fullCFI);
     setCustomFieldInfo(customFieldInfo);
+    setCustomFieldNumbers(customFieldFullInfo);
   };
 
   const [customFieldInfo, setCustomFieldInfo] = useState(async () => []);
+  const [customFieldNumbers, setCustomFieldNumbers] = useState(async () => []);
 
   return (
     <Tab label="☰ Custom Fields info">
@@ -79,7 +104,7 @@ export const TabCustomFieldsinfo = () => {
             <Text>Number of issues</Text>
           </Cell>
         </Head>
-        {customFieldInfo?.map(customField => (
+        {customFieldInfo?.map((customField, i) => (
           <Row>
             <Cell>
               <Text>{customField.name}</Text>
@@ -88,7 +113,7 @@ export const TabCustomFieldsinfo = () => {
               <Text>{customField.id}</Text>
             </Cell>
             <Cell>
-              <Text>{customField.id}</Text>
+              <Text>{customFieldNumbers[i] || ''}</Text>
             </Cell>
           </Row>
         ))}

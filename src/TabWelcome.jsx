@@ -44,7 +44,7 @@ import {
 
 export const TabWelcome = (props) => {
   const { state, handleGetSystemInfo } = props;
-  console.log(state);
+  // console.log(state);
   // const [totalIssues, setTotalIssues] = useState('Scan to load...');
   // const [totalProjects, setTotalProjects] = useState('Scan to load...');
   // const [totalCustomFields, setTotalCustomFields] = useState('Scan to load...');
