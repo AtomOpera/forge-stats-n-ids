@@ -28,7 +28,7 @@ import ForgeUI, {
   UserPicker,
 } from '@forge/ui';
 import {
-  getCustomFieldInfo,
+  getCustomFieldsInfo,
   getCurrentUser,
   getAProjectPage,
   getAllProjects,
@@ -42,39 +42,53 @@ import {
 
 export const TabCustomFieldsinfo = () => {
 
-  const handleGetCustomFieldInfo = async () => {
-    const customFieldInfo = await getCustomFieldInfo();
+  const handleGetCustomFieldsInfo = async () => {
+    const customFieldsInfo = await getCustomFieldsInfo();
+    const CFItemsToLoad = customFieldsInfo.slice(0, 10);
     // const issues = await getAllIssues();
     // let cfCount = 0;
 
-    // const fullCFI = customFieldInfo.map((cf) => {
+    // const fullCFI = customFieldsInfo.map((cf) => {
     //   let cfCount = 0;
     //   issues.forEach((issue) => {
     //     if (issue.fields[cf.id] !== null) cfCount += 1;
     //   });
     //   return { ...cf, count: cfCount };
     // });
-    // console.log(customFieldInfo)
+    // console.log(customFieldsInfo)
 
-    let customFieldFullInfo = [];
+    let customFieldsFullInfo = [];
     let firstOnes = 0;
 
-    for (const customField of customFieldInfo) {
-      firstOnes += 1;
-      console.log(customField);
-      if (customField?.schema?.customId) {
-        const count = await getCustomFieldCount(customField.schema.customId);
-        console.log(count);
-        customFieldFullInfo = [...customFieldFullInfo, count];
-        console.log(customFieldFullInfo);
+    // console.log(customFieldsInfo);
+    // console.log(customFieldsInfo.slice(0, 10));
+
+    const bla = await Promise.all(customFieldsInfo.slice(0, 10).map(async (CF) => {
+      console.log(CF.schema.customId);
+      if (CF?.schema?.customId) {
+        console.log(CF.schema.customId);
+        const countForItem = await getCustomFieldCount(CF.schema.customId);
+        console.log(countForItem);
+        customFieldsFullInfo = [...customFieldsFullInfo, countForItem];
       }
-      if (firstOnes >= 15) break;
-    }
+    }));
+
+    // for (const customField of customFieldsInfo) {
+    //   firstOnes += 1;
+    //   console.log(customField);
+    //   if (customField?.schema?.customId) {
+    //     const count = await getCustomFieldCount(customField.schema.customId);
+    //     console.log(count);
+    //     customFieldFullInfo = [...customFieldFullInfo, count];
+    //     console.log(customFieldFullInfo);
+    //   }
+    //   if (firstOnes >= 15) break;
+    // }
     // console.log(customFieldInfo);
-    console.log({ customFieldFullInfo });
+    console.log({ customFieldsFullInfo });
     // console.log(fullCFI);
-    setCustomFieldInfo(customFieldInfo);
-    setCustomFieldNumbers(customFieldFullInfo);
+    setCustomFieldInfo(customFieldsInfo);
+    setCustomFieldNumbers(customFieldsFullInfo);
   };
 
   const [customFieldInfo, setCustomFieldInfo] = useState(async () => []);
@@ -85,14 +99,14 @@ export const TabCustomFieldsinfo = () => {
       <Text></Text>
 
       <ButtonSet>
-        <Button text="Get Custom Fields info" onClick={handleGetCustomFieldInfo} />
+        <Button text="Get Custom Fields info" onClick={handleGetCustomFieldsInfo} />
         <Button text="danger" appearance="danger" onClick={() => { }} />
         <Button text="warning" appearance="warning" onClick={() => { }} />
         <Button text="link" appearance="link" onClick={() => { }} />
         <Button text="subtle" appearance="subtle" onClick={() => { }} />
         <Button text="subtle-link" appearance="subtle-link" onClick={() => { }} />
       </ButtonSet>
-      <Table>
+      <Table rowsPerPage={10}>
         <Head>
           <Cell>
             <Text>Custom Field Name</Text>
@@ -113,7 +127,7 @@ export const TabCustomFieldsinfo = () => {
               <Text>{customField.id}</Text>
             </Cell>
             <Cell>
-              <Text>{customFieldNumbers[i] || ''}</Text>
+              <Text>{customFieldNumbers[i] === undefined ? 'N/A' : customFieldNumbers[i]}</Text>
             </Cell>
           </Row>
         ))}

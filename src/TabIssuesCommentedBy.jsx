@@ -29,7 +29,7 @@ import ForgeUI, {
   UserPicker,
 } from '@forge/ui';
 import {
-  getCustomFieldInfo,
+  getCustomFieldsInfo,
   getCurrentUser,
   getAProjectPage,
   getAllProjects,
@@ -42,7 +42,7 @@ import {
 export const TabIssuesCommentedBy = () => {
   const [formState, setFormState] = useState(undefined);
   const [instance, setInstance] = useState(undefined);
-  const [customFieldInfo, setCustomFieldInfo] = useState(async () => []); // await getCustomFieldInfo());
+  const [customFieldsInfo, setCustomFieldsInfo] = useState(async () => []); // await getCustomFieldsInfo());
   const [allProjects, setAllProjects] = useState(async () => []); // await getAllProjects());
   const [totalIssuesInInstance, setTotalIssuesInInstance] = useState(async () => []); // await getTotalIssuesInInstance());
   const [currentUser, setCurrentUser] = useState(async () => { }); // await getCurrentUser());
@@ -59,7 +59,7 @@ export const TabIssuesCommentedBy = () => {
       currentUserResp,
       currentinstance,
     ] = await Promise.all([
-      // getCustomFieldInfo(),
+      // getCustomFieldsInfo(),
       // getAllProjects(),
       // getTotalIssuesInInstance(),
       getCurrentUser(),

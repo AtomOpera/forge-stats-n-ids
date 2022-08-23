@@ -79,7 +79,7 @@ export async function getCustomFieldCount(fieldId) {
   }
 }
 
-export async function getCustomFieldInfo() {
+export async function getCustomFieldsInfo() {
   const maxResults = 100; // 50;
   let startAt = 0;
   let resource;
