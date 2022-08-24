@@ -37,6 +37,7 @@ import {
   getAllIssuesCommentedByUser,
   getIssuesInTableFormat,
   getInstance,
+  get50IssuesCommentedByUser,
 } from './restApiCalls';
 
 export const TabIssuesCommentedBy = () => {
@@ -88,6 +89,7 @@ export const TabIssuesCommentedBy = () => {
      */
     // {"search":"one","user":"5d19ec2b0fa0030d15fc5ee2","projects":["GSP","FT"]}
     // console.log(formData.projects);
+    // const commentedByUser = await get50IssuesCommentedByUser(currentUser.accountId, formData.projects || []);
     const commentedByUser = await getAllIssuesCommentedByUser(currentUser.accountId, formData.projects || []);
     setFormState(formData);
     setTotalComentedIssues(commentedByUser.totalIssuesFound);

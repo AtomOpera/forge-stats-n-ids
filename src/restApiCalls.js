@@ -10,6 +10,37 @@ export const getInstance = async () => {
 }
 
 export const getAllIssuesCommentedByUser = async (userAccountId, projects) => {
+  let startAt = 0;
+  let issues = [];
+  const maxResults = 50;
+  let isLast = false;
+  let prevInfLoop = 0;
+  const projectsQuery = projects.length !== 0 ? `project in (${projects})` : 'project is not EMPTY';
+  let count = 0;
+  const paginated = `&startAt=${startAt}&maxResults=${maxResults}`;
+  console.log(`/rest/api/3/search?jql=${projectsQuery}&startAt=${startAt}&maxResults=${maxResults}&fields=summary,comment`);
+
+  do {
+    console.log({ startAt });
+    const jsonResponse = await api
+      .asApp()
+      .requestJira(
+        route`/rest/api/3/search?jql=${projectsQuery}&startAt=${startAt}&maxResults=${maxResults}&fields=summary,comment`
+      );
+    const parsedPage = await jsonResponse.json();
+    const issuesCommented = getIssuesCommentedByUser(parsedPage.issues, userAccountId);
+    console.log(parsedPage.total);
+    issues = [...issues, ...issuesCommented];
+    startAt += parsedPage.issues.length;
+    isLast = parsedPage.issues.length === 0 ? true : false;
+    prevInfLoop += 1;
+
+  } while (!isLast && prevInfLoop < 10);
+  const totalIssuesFound = issues.length;
+  return { totalIssuesFound, issues };
+};
+
+export const get50IssuesCommentedByUser = async (userAccountId, projects) => {
   const startAt = 0;
   const maxResults = 50;
   const projectsQuery = projects.length !== 0 ? `project in (${projects})` : 'project is not EMPTY';
@@ -130,7 +161,7 @@ export async function getAllIssues() {
   let startAt = 0;
   let resource;
   let fullResource;
-  let customFields = [];
+  let issues = [];
   let page;
   let isLast = false;
   let prevInfLoop = 0;
@@ -145,14 +176,14 @@ export async function getAllIssues() {
     // console.log(jsonResponse);
     const parsedPage = await jsonResponse.json();
     console.log(parsedPage);
-    customFields = [...customFields, ...parsedPage.issues];
+    issues = [...issues, ...parsedPage.issues];
     startAt += parsedPage.issues.length;
     isLast = parsedPage.issues.length === 0 ? true : false;
     // isLast = parsedPage.isLast;
     prevInfLoop += 1;
     // console.log(prevInfLoop);
   } while (!isLast && prevInfLoop < 10);
-  return customFields;
+  return issues;
 };
 
 export const getTotalCustomFieldsInInstance = async () => {

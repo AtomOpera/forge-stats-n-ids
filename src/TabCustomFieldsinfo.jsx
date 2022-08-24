@@ -41,6 +41,9 @@ import {
 } from './restApiCalls';
 
 export const TabCustomFieldsinfo = () => {
+  // const [issues, setIssues] = useState([]);
+  // useEffect(async () => { const allCurrentIissues = await getAllIssues(); setIssues(allCurrentIissues) }, []);
+
 
   const handleGetCustomFieldsInfo = async () => {
     const customFieldsInfo = await getCustomFieldsInfo();
@@ -63,7 +66,23 @@ export const TabCustomFieldsinfo = () => {
     // console.log(customFieldsInfo);
     // console.log(customFieldsInfo.slice(0, 10));
 
-    const bla = await Promise.all(customFieldsInfo.slice(0, 10).map(async (CF) => {
+    // // Start timing now
+    // var t0 = new Date();
+    // customFieldsInfo.slice(0, 10).map((CF) => {
+    //   let cfCount = 0;
+    //   issues.forEach((issue) => {
+    //     if (issue.fields[CF.id] !== null) cfCount += 1;
+    //     console.log(cfCount);
+    //     customFieldsFullInfo = [...customFieldsFullInfo, cfCount];
+    //   });
+    // });
+    // // ... and stop.
+    // var t1 = new Date();
+    // console.log("Call to Promise.all took " + (t1 - t0) + " milliseconds.");
+
+    // Start timing now
+    var t0 = new Date();
+    await Promise.all(customFieldsInfo.slice(0, 10).map(async (CF) => {
       console.log(CF.schema.customId);
       if (CF?.schema?.customId) {
         console.log(CF.schema.customId);
@@ -72,6 +91,9 @@ export const TabCustomFieldsinfo = () => {
         customFieldsFullInfo = [...customFieldsFullInfo, countForItem];
       }
     }));
+    // ... and stop.
+    var t1 = new Date();
+    console.log("Call to Promise.all took " + (t1 - t0) + " milliseconds.");
 
     // for (const customField of customFieldsInfo) {
     //   firstOnes += 1;
