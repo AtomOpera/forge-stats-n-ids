@@ -5,6 +5,8 @@ import ForgeUI, {
   useState,
   useEffect,
 } from '@forge/ui';
+import { storage, startsWith } from '@forge/api';
+import api from "@forge/api";
 import {
   getTotalIssuesInInstance,
   getTotalProjectsInInstance,
@@ -30,6 +32,8 @@ export default function () {
     totalWorkflows: 'Scan to load...',
   });
   const handleGetSystemInfo = async () => {
+    const stored = await storage.get('abriTest000');
+    if (stored) { console.log({ stored }); setState(stored); return; }
     const totalIssues = await getTotalIssuesInInstance();
     const totalProjects = await getTotalProjectsInInstance();
     const totalCustomFields = await getTotalCustomFieldsInInstance();
@@ -37,7 +41,7 @@ export default function () {
     const totalBoards = await getTotalBoardsInInstance();
     const totalScreens = await getTotalScreensInInstance();
     const totalWorkflows = await getTotalWorkflowsInInstance();
-    setState({
+    const newState = {
       totalIssues,
       totalProjects,
       totalCustomFields,
@@ -45,7 +49,9 @@ export default function () {
       totalBoards,
       totalScreens,
       totalWorkflows,
-    });
+    };
+    setState(newState);
+    storage.set('abriTest000', newState);
   };
   useEffect(async () => { await handleGetSystemInfo(); }, []);
 
