@@ -308,7 +308,7 @@ export const getAllProjects = async () => {
     const jsonResponse = await api
       .asUser()
       .requestJira(
-        route`/rest/api/3/project/search?startAt=${startAt}&maxResults=${maxResults}`
+        route`/rest/api/3/project/search?startAt=${startAt}&maxResults=${maxResults}&expand=insight`
         // route`/rest/api/3/search?jql=${allProjects}` // ${paginated}&fields=summary,comment`
       );
     const response = await jsonResponse.json();

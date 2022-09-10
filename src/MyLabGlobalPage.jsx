@@ -20,6 +20,7 @@ import { TabIssuesCommentedBy } from './TabIssuesCommentedBy';
 import { TabWelcome } from './TabWelcome';
 import { TabWelcomeAlt } from './TabWelcomeAlt';
 import { TabCustomFieldsinfo } from './TabCustomFieldsinfo';
+import { TabProjectsInfo } from './TabProjectsInfo';
 
 export default function () {
   const [state, setState] = useState({
@@ -63,6 +64,7 @@ export default function () {
           <TabWelcomeAlt handleGetSystemInfo={handleGetSystemInfo} state={state} />
           <TabIssuesCommentedBy />
           <TabCustomFieldsinfo />
+          <TabProjectsInfo />
         </Tabs>
       </Fragment>
     </GlobalPage>
