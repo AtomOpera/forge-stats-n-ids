@@ -43,7 +43,9 @@ import ForgeUI, {
   export const TabProjectsInfo = () => {
   
     const handleGetProjectsInfo = async () => {
-      const allProjects = await getAllProjects();
+      const allProjects = (await getAllProjects())
+      let allProjectsSorted = [];
+      allProjects.sort((a, b) => (a.insight.lastIssueUpdateTime > b.insight.lastIssueUpdateTime) ? 1 : -1);
       console.log(allProjects);
       setProjects(allProjects);
     };
