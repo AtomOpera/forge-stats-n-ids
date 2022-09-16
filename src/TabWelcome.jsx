@@ -41,6 +41,7 @@ import {
   getTotalScreensInInstance,
   getTotalWorkflowsInInstance,
 } from './restApiCalls';
+import { HowLongAgo } from './HowLongAgo';
 
 export const TabWelcome = (props) => {
   const { state, handleGetSystemInfo } = props;
@@ -96,7 +97,7 @@ export const TabWelcome = (props) => {
            * removed = red
            */
         }
-        <Text>Last scan: 50 minutes ago</Text>
+        <HowLongAgo />
         {<Text>📚 Issues in Jira: <StatusLozenge text={state.totalIssues} appearance={state.totalIssues > 1300 ? "default" : "removed"} /></Text>}
         {<Text>🗂️ Projects in Jira: <StatusLozenge text={state.totalProjects} appearance="inprogress" /></Text>}
         {<Text>🎫 Fields in Jira: <StatusLozenge text={state.totalCustomFields} appearance="moved" /></Text>}
