@@ -21,6 +21,7 @@ import { TabWelcome } from './TabWelcome';
 import { TabWelcomeAlt } from './TabWelcomeAlt';
 import { TabCustomFieldsinfo } from './TabCustomFieldsinfo';
 import { TabProjectsInfo } from './TabProjectsInfo';
+import { Header } from './Header' 
 
 export default function () {
   const [state, setState] = useState({
@@ -54,7 +55,7 @@ export default function () {
     setState(newState);
     storage.set('abriTest000', newState);
   };
-  useEffect(async () => { await handleGetSystemInfo(); }, []);
+  // useEffect(async () => { await handleGetSystemInfo(); }, []);
 
   return (
     <GlobalPage>

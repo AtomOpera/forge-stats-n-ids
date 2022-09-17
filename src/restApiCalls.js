@@ -100,6 +100,7 @@ export async function getCustomFieldCount(fieldId) {
         route`/rest/api/3/search?jql=cf[${fieldId}] is not EMPTY`
         // route`/rest/api/3/search?jql=${allProjects}` // ${paginated}&fields=summary,comment`
       );
+      console.log(`/rest/api/3/search?jql=cf[${fieldId}] is not EMPTY`);
     // console.log({ jsonResponse });
     const response = await jsonResponse.json();
     console.log({ response });
