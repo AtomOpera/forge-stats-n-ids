@@ -21,6 +21,7 @@ import { TabWelcome } from './TabWelcome';
 import { TabWelcomeAlt } from './TabWelcomeAlt';
 import { TabCustomFieldsinfo } from './TabCustomFieldsinfo';
 import { TabProjectsInfo } from './TabProjectsInfo';
+import { TabIssueTypes } from './TabIssueTypes';
 import { Header } from './Header' 
 
 export default function () {
@@ -62,10 +63,11 @@ export default function () {
       <Fragment>
         <Tabs>
           <TabWelcome handleGetSystemInfo={handleGetSystemInfo} state={state} />
-          <TabWelcomeAlt handleGetSystemInfo={handleGetSystemInfo} state={state} />
+          {/* <TabWelcomeAlt handleGetSystemInfo={handleGetSystemInfo} state={state} /> */}
           <TabIssuesCommentedBy />
           <TabCustomFieldsinfo />
           <TabProjectsInfo />
+          <TabIssueTypes />
         </Tabs>
       </Fragment>
     </GlobalPage>
