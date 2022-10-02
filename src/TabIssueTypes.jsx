@@ -8,6 +8,7 @@ import ForgeUI, {
   SectionMessage,
   Fragment,
   IssueGlance,
+  Image, 
   GlobalPage,
   useAction,
   useState,
@@ -89,7 +90,6 @@ export const TabIssueTypes = () => {
   return (
     <Tab label="🧮 Issue Types">
       <Text></Text>
-
       <ButtonSet>
         <Button text="Get Issue types info" icon="retry" iconPosition="before" onClick={handleGetIssueTypesInfo} />
         <Button text="Sort by oldest" appearance="subtle" icon="filter" iconPosition="after" onClick={handleGetIssueTypesInfo} />
@@ -101,6 +101,9 @@ export const TabIssueTypes = () => {
       {formState && <Text>{JSON.stringify(formState)}</Text>}
       <Table>
         <Head>
+          <Cell>
+            <Text>Icon</Text>
+          </Cell>
           <Cell>
             <Text>Issue Type Name</Text>
           </Cell>
@@ -120,7 +123,16 @@ export const TabIssueTypes = () => {
         {issueTypes?.map((issueType, i) => (
           <Row>
             <Cell>
-              <Text>{issueType.name}</Text>
+              <Image
+                src={issueType.iconUrl}
+                alt="icon"
+              />
+              {console.log(issueType)}
+            </Cell>
+            <Cell>
+              <Text>
+                {issueType.name}
+              </Text>
             </Cell>
             <Cell>
               <Text>{issueType.id}</Text>
