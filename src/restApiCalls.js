@@ -100,7 +100,7 @@ export async function getCustomFieldCount(fieldId) {
         route`/rest/api/3/search?jql=cf[${fieldId}] is not EMPTY&fields=summary`
         // route`/rest/api/3/search?jql=${allProjects}` // ${paginated}&fields=summary,comment`
       );
-      console.log(`/rest/api/3/search?jql=cf[${fieldId}] is not EMPTY&fields=summary`);
+    console.log(`/rest/api/3/search?jql=cf[${fieldId}] is not EMPTY&fields=summary`);
     // console.log({ jsonResponse });
     const response = await jsonResponse.json();
     console.log({ response });
@@ -201,7 +201,25 @@ export const getAllIssueTypesForUser = async () => {
   // page = await AP.request(`/rest/api/2/field/${resource}`);
   // parsedPage = await JSON.parse(page.body);
   const parsedPage = await jsonResponse.json();
-  return parsedPage;
+  const standardIssueTypes = parsedPage.filter((issueType) => {
+    if (!issueType.scope) return issueType;
+  });
+  return standardIssueTypes;
+};
+
+
+export const getAvatar = async (issueTypeId) => {
+  console.log({ issueTypeId });
+  const parsedPage = await api.asApp().requestJira(route`/rest/api/3/issuetype/${issueTypeId}/avatar2?size=26`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json'
+    }
+  });
+  console.log({ parsedPage });
+  const avatar = await parsedPage.json();
+  console.log({ avatar });
+  return avatar;
 };
 
 export const getTotalCustomFieldsInInstance = async () => {

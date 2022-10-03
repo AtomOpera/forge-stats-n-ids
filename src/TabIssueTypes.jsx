@@ -8,7 +8,7 @@ import ForgeUI, {
   SectionMessage,
   Fragment,
   IssueGlance,
-  Image, 
+  Image,
   GlobalPage,
   useAction,
   useState,
@@ -41,21 +41,49 @@ import {
   getCustomFieldCount,
   getAllIssues,
   getAllIssueTypesForUser,
+  getAvatar,
 } from './restApiCalls';
-  
+
 export const TabIssueTypes = () => {
+
+
 
   const handleGetIssueTypesInfo = async () => {
     const allIssueTypes = (await getAllIssueTypesForUser())
+    // console.log({ allIssueTypes });
     // let allProjectsSorted = [];
     // allProjects.sort((a, b) => (a.insight.lastIssueUpdateTime > b.insight.lastIssueUpdateTime) ? 1 : -1);
     // console.log(allProjects);
+    // let allAvatars = [];
+    // for (const issueType of allIssueTypes) {
+    //   const avatar = await getAvatar(issueType.id);
+    //   allAvatars = [...allAvatars, { [issueType.id]: avatar }];
+    // }
+    // // const allAvatars = allIssueTypes.map(async (issueType) => {
+    // //   const avatar = await getAvatar(issueType.id);
+    // //   return { [issueType.id]: avatar };
+    // // })
+    // setAvatars(allAvatars);
     setIssueTypes(allIssueTypes);
   };
 
   const [issueTypes, setIssueTypes] = useState(async () => []);
+  const [avatars, setAvatars] = useState(async () => []);
   // useState is a UI kit hook we use to manage the form data in local state
   const [formState, setFormState] = useState(undefined);
+  const [domain, setDomain] = useState(undefined);
+
+  const mapIconUrl = (avatarId) => {
+    if (!domain || !avatarId) return;
+    const iconUrl = `${domain}/rest/api/3/universal_avatar/view/type/issuetype/avatar/${avatarId}?size=xsmall&format=png`;
+    return iconUrl;
+  };
+
+  useEffect(async () => {
+    const domain = await getInstance();
+    console.log(domain);
+    setDomain(domain);
+  }, []);
 
   // Handles form submission, which is a good place to call APIs, or to set component state...
   const onSubmit = async (formData) => {
@@ -124,10 +152,13 @@ export const TabIssueTypes = () => {
           <Row>
             <Cell>
               <Image
-                src={issueType.iconUrl}
+                // src={issueType.iconUrl}
+                src={mapIconUrl(issueType.avatarId) || issueType.iconUrl}
+                // src={async () => await getAvatar(issueType.id)}
                 alt="icon"
+                size="xlarge"
               />
-              {console.log(issueType)}
+              {console.log(JSON.stringify(issueType, null, 2))}
             </Cell>
             <Cell>
               <Text>

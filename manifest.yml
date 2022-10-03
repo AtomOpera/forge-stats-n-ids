@@ -41,6 +41,7 @@ permissions:
     - read:avatar:jira
     - read:project-category:jira
     - manage:jira-project
+    - manage:jira-configuration
 
 app:
   id: ari:cloud:ecosystem::app/53ff5d5b-8e5e-4599-9aae-17393b580c6f
