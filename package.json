@@ -9,12 +9,13 @@
     "hook-errors": "echo '\\x1b[31mThe build failed because a Forge UI hook is being used incorrectly. Forge UI hooks follow the same rules as React Hooks but have their own API definitions. See the Forge documentation for details on how to use Forge UI hooks.\n' && exit 1"
   },
   "devDependencies": {
-    "eslint": "^7.11.0",
-    "eslint-plugin-react-hooks": "^2.1.2"
+    "eslint": "^8.56.0",
+    "eslint-plugin-react-hooks": "^4.6.2"
   },
   "dependencies": {
     "@forge/api": "2.6.1",
     "@forge/events": "^0.6.1",
+    "@forge/react": "^10.2.0",
     "@forge/resolver": "^1.3.5",
     "@forge/ui": "^1.1.0"
   }
