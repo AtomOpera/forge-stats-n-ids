@@ -1,7 +1,11 @@
 modules:
   jira:globalPage:
     - key: forge-stats-n-ids-global-page
-      function: global # which redirects to MyLabGlobalPage.jsx
+      # function: global # which redirects to MyLabGlobalPage.jsx
+      resource: main
+      resolver:
+        function: resolver
+      render: native
       title: forge-stats-n-ids-ui-kit
       icon: https://pic.onlinewebfonts.com/svg/img_286633.png
   # jira:globalPage:
@@ -13,17 +17,19 @@ modules:
   #     title: forge-test-lab-custom-ui-async
   #     icon: https://pic.onlinewebfonts.com/svg/img_286633.png
   function:
-    - key: global
-      handler: index.Global
+    # - key: global
+    - key: resolver
+      handler: index.handler
 resources:
   - key: main
-    path: static/lab-react/public # /build
+    # path: static/lab-react/public # /build
+    path: src/frontend/index.jsx
 permissions:
   content:
     styles:
-      - 'unsafe-inline'
+      - unsafe-inline
     scripts:
-      - 'unsafe-inline'
+      - unsafe-inline
   scopes:
     - read:application-role:jira
     - read:group:jira
@@ -38,10 +44,14 @@ permissions:
     - read:jira-user
     - read:project:jira
     - read:screen:jira
-    - read:avatar:jira
     - read:project-category:jira
     - manage:jira-project
     - manage:jira-configuration
+  external:
+    images:
+      - go.atlassian.com
 
 app:
+  runtime:
+    name: nodejs18.x
   id: ari:cloud:ecosystem::app/53ff5d5b-8e5e-4599-9aae-17393b580c6f
